@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>report1.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<hr>
+<h2 id="front-matter">Front matter</h2>
+<p>title: &quot;Лебораторная работа №1&quot;
+subtitle: &quot;Введение в git и markdown&quot;
+author: &quot;Лебедева Ольга Андреевна&quot;</p>
+<h2 id="generic-otions">Generic otions</h2>
+<p>lang: ru-RU
+toc-title: &quot;Содержание&quot;</p>
+<h2 id="bibliography">Bibliography</h2>
+<p>bibliography: bib/cite.bib
+csl: pandoc/csl/gost-r-7-0-5-2008-numeric.csl</p>
+<h2 id="pdf-output-format">Pdf output format</h2>
+<p>toc: true # Table of contents
+toc-depth: 2
+lof: true # List of figures
+lot: true # List of tables
+fontsize: 12pt
+linestretch: 1.5
+papersize: a4
+documentclass: scrreprt</p>
+<h2 id="i18n-polyglossia">I18n polyglossia</h2>
+<p>polyglossia-lang:
+name: russian
+options:
+- spelling=modern
+- babelshorthands=true
+polyglossia-otherlangs:
+name: english</p>
+<h2 id="i18n-babel">I18n babel</h2>
+<p>babel-lang: russian
+babel-otherlangs: english</p>
+<h2 id="fonts">Fonts</h2>
+<p>mainfont: PT Serif
+romanfont: PT Serif
+sansfont: PT Sans
+monofont: PT Mono
+mainfontoptions: Ligatures=TeX
+romanfontoptions: Ligatures=TeX
+sansfontoptions: Ligatures=TeX,Scale=MatchLowercase
+monofontoptions: Scale=MatchLowercase,Scale=0.9</p>
+<h2 id="biblatex">Biblatex</h2>
+<p>biblatex: true
+biblio-style: &quot;gost-numeric&quot;
+biblatexoptions:</p>
+<ul>
+<li>parentracker=true</li>
+<li>backend=biber</li>
+<li>hyperref=auto</li>
+<li>language=auto</li>
+<li>autolang=other*</li>
+<li>citestyle=gost-numeric</li>
+</ul>
+<h2 id="pandoc-crossref-latex-customization">Pandoc-crossref LaTeX customization</h2>
+<p>figureTitle: &quot;Рис.&quot;
+tableTitle: &quot;Таблица&quot;
+listingTitle: &quot;Листинг&quot;
+lofTitle: &quot;Список иллюстраций&quot;
+lotTitle: &quot;Список таблиц&quot;
+lolTitle: &quot;Листинги&quot;</p>
+<h2 id="misc-options">Misc options</h2>
+<p>indent: true
+header-includes:</p>
+<ul>
+<li>\usepackage{indentfirst}</li>
+<li>\usepackage{float} # keep figures where there are in the text</li>
+<li>\floatplacement{figure}{H} # keep figures where there are in the text</li>
+</ul>
+<hr>
+<h1 id="%D1%86%D0%B5%D0%BB%D1%8C-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B">Цель работы</h1>
+<ol>
+<li>Изучение основных команд Git для управления версиями кода, включая клонирование репозиториев, фиксацию изменений и совместную работу с другими разработчиками.</li>
+<li>Освоение основных команд и концепций операционной системы Linux, таких как навигация по файловой системе, управление файлами и папками, а также работа с правами доступа.</li>
+<li>Освоение синтаксиса и возможностей языка разметки Markdown для создания структурированных документов с форматированным текстом, изображениями и другими элементами.</li>
+</ol>
+<h1 id="%D1%82%D0%B5%D0%BE%D1%80%D0%B5%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5-%D0%B2%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5">Теоретическое введение</h1>
+<p>Git - это система контроля версий, разработанная Линусом Торвальдсом. Она предназначена для отслеживания изменений в исходном коде программного обеспечения и управления ими. Git позволяет разработчикам эффективно работать над проектами в команде, фиксировать изменения, создавать ветви разработки, сливать изменения и многое другое. Этот инструмент широко используется в индустрии разработки ПО и является стандартом для совместной работы над проектами.</p>
+<p>Linux - это семейство операционных систем с открытым исходным кодом, основанных на ядре Linux. Linux предоставляет свободное программное обеспечение и позволяет пользователям полностью настраивать и настраивать свои операционные системы под свои нужды. Он широко используется в различных областях, включая серверы, персональные компьютеры, мобильные устройства и встроенные системы.</p>
+<p>Markdown - это легкий язык разметки, который используется для форматирования текста. Он позволяет создавать структурированные документы с использованием простого и интуитивно понятного синтаксиса. Markdown широко применяется для написания README файлов в репозиториях Git, статей на блогах, форматирования сообщений в форумах и многое другое. Он позволяет быстро создавать читаемый и структурированный контент без необходимости в глубоком знании HTML или других языков разметки.</p>
+<h1 id="%D1%85%D0%BE%D0%B4-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B">Ход работы</h1>
+<p>Для работы будем использовать виртуальную машину с установленным дистрибутивом ubuntu. (рис. [-@fig:001])</p>
+<p><img src="1.jpg" alt="Запуск VB">{ #fig:001 width=70% }</p>
+<p>При начальном запуске машины имя пользователя - ubuntu. Для соглашения об наименовании добавим нового пользователя и предоставим ему права администратора. Обозначим имя и пароль. (рис. [-@fig:002]) (рис. [-@fig:003])</p>
+<p><img src="2.jpg" alt="Соглашение об наименовании">{ #fig:002 width=70% }</p>
+<p><img src="3.jpg" alt="Соглашение об наименовании">{ #fig:003 width=70% }</p>
+<p>Далее, устанавливаем Git на нашем компьютере Ubuntu, чтобы мы могли использовать его для управления версиями.  (рис. [-@fig:004])</p>
+<p><img src="4.jpg" alt="Установка Git">{ #fig:004 width=70% }</p>
+<p>Клонируем репозиторий, предложенный в качестве шаблона для хранения и создания лабораторных работ и отчётов. (рис. [-@fig:005])</p>
+<p><img src="5.jpg" alt="Клонирование репозитория">{ #fig:005 width=70% }</p>
+<p>Создаём через консоль ssh-ключ, чтобы связать локальную папку и репозиторий на Гитхабе. (рис. [-@fig:006])</p>
+<p><img src="6.jpg" alt="Создание ssh-ключа">{ #fig:006 width=70% }</p>
+<p>Мы не учли, что необходимо было перезайти под именем нового пользователя, поэтому делаем это с помощью logout. (рис. [-@fig:007]) (рис. [-@fig:008])</p>
+<p><img src="7.jpg" alt="Повторная авторизация&quot;">{ #fig:007 width=70% }</p>
+<p><img src="8.jpg" alt="Вход в аккаунт">{ #fig:008 width=70% }</p>
+<p>Открываем скрытые файлы и находим папку .ssh, где был сгенерирован ключ.(рис. [-@fig:009])</p>
+<p><img src="9.jpg" alt="Запись ключа ssh">{ #fig:009 width=70% }</p>
+<p>Заходим на Гитхаб в раздел настройки и создаём новый ключ, чтобы связать наш репозиторий и локальную папку. (рис. [-@fig:010])</p>
+<p><img src="10.jpg" alt="Данные об ssh-ключе">{ #fig:010 width=70% }</p>
+<p>Следующие команды в Git используются для настройки имени пользователя и адреса электронной почты, которые будут ассоциированы с коммитами. Первая команда устанавливает имя пользователя, а вторая - наш адрес электронной почты. Это помогает идентифицировать нас как автора коммитов в истории Git. (рис. [-@fig:011])</p>
+<p><img src="11.jpg" alt="Идентификация">{ #fig:011 width=70% }</p>
+<p>Создаём рабочее пространство по следующей иерархии.(рис. [-@fig:012])</p>
+<p><img src="12.jpg" alt="Создание каталогов">{ #fig:012 width=70% }</p>
+<p>Переходим в каталог Математическое_моделирование и клонируем репозиторий, который мы уже разместили на своём Гитхабе. (рис. [-@fig:013])</p>
+<p><img src="13.jpg" alt="Клонирование репозитория">{ #fig:013 width=70% }</p>
+<p>Переходим на компьютере в папку Mathmod и видим, что предложенный репозиторий был удачно клонирован. (рис. [-@fig:014])</p>
+<p><img src="14.jpg" alt="Клонированные папки и файлы">{ #fig:014 width=70% }</p>
+<p>Для примера создадим через консоль текстовый файл с именем example.txt. Далее ввёдём три стандартных команды, которые используются для добавления изменений в репозиторий Git, фиксации изменений и отправки их на удаленный сервер: (рис. [-@fig:015])</p>
+<pre><code>git add .
+git commit -m &quot;Message&quot;
+git push
+</code></pre>
+<p><img src="15.jpg" alt="Отправка изменений в репозиторий">{ #fig:015 width=70% }</p>
+<p>Однако возникает ошибка, так как мы используем URL-адрес клонирования HTTPS для репозитория. Чтобы исправить это, введём следующуй команду и повторим push, после чего все изменения в локальной папке уйдут в наш репозиторий. (рис. [-@fig:016])</p>
+<p><img src="16.jpg" alt="Исправление возникшей ошибки">{ #fig:016 width=70% }</p>
+<p>Также мы в любой момент можем проверить, с какими репозиториями можем удалённо работать: (рис. [-@fig:017])</p>
+<p><img src="17.jpg" alt="Список удаленных репозиториев ">{ #fig:017 width=70% }</p>
+<p>Во второй части работы вспомним markdown. Сделаем это на примере собственного файла, где указаны все необходимые особенности синтаксиса. (рис. [-@fig:018]) (рис. [-@fig:019])</p>
+<p><img src="18.jpg" alt="Синтаксис markdown">{ #fig:018 width=70% }</p>
+<p><img src="19.jpg" alt="Пользовательский вид">{ #fig:019 width=70% }</p>
+<p>Переходим к установке среды Visual Studio Code. Скачиваем файл с официального сайта и при помощи команды в консоли преобразуем в папку.  (рис. [-@fig:020])</p>
+<p><img src="20.jpg" alt="Установка Visual Studio Code">{ #fig:021 width=70% }</p>
+<p>Для дальнейшей работы с файлам нам необходимо установить утилиту для работы с текстовыми форматами. Воспользуемся для этого утилитой pandoc. (рис. [-@fig:021])</p>
+<p><img src="21.jpg" alt="Установка pandoc">{ #fig:021 width=70% }</p>
+<p>Извлекаем из скаченного архива папки и файлы: (рис. [-@fig:022])</p>
+<p><img src="22.jpg" alt="Установка pandoc">{ #fig:022 width=70% }</p>
+<p>Для примера попробуем сконвертировать файл с расширением .md в другой текстовый формат. (рис. [-@fig:023])</p>
+<p><img src="23.jpg" alt="Использование pandoc">{ #fig:023 width=70% }</p>
+<p>В результате, получим новый файл с расширением .docx: (рис. [-@fig:024])</p>
+<p><img src="24.jpg" alt="Конвертация файла">{ #fig:024 width=70% }</p>
+<h1 id="%D0%B2%D1%8B%D0%B2%D0%BE%D0%B4">Вывод</h1>
+<ol>
+<li>Изучили основные команды Git для управления версиями кода, включая клонирование репозиториев, фиксацию изменений и совместную работу с другими разработчиками.</li>
+<li>Освоили основные команды и концепции операционной системы Linux, такие как навигация по файловой системе, управление файлами и папками, а также работа с правами доступа.</li>
+<li>Освоили синтаксис и возможности языка разметки Markdown для создания структурированных документов с форматированным текстом, изображениями и другими элементами.</li>
+</ol>
+
+</body>
+</html>
