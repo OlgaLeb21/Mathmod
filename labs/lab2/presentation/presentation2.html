@@ -1,0 +1,211 @@
+<h2 id="цель-работы">Цель работы</h2>
+<p>Решить задачу о погоне, используя Julia и OpenModelica. Построить
+траекторию движения катера и лодки для двух случаев.</p>
+<h2 id="теоретическое-введение">Теоретическое введение</h2>
+<p>Julia - это высокопроизводительный динамический язык программирования
+общего назначения, который изначально разрабатывался для решения задач
+научных вычислений и анализа данных. Julia отличается от других языков
+программирования своей скоростью выполнения и простотой синтаксиса, что
+делает его привлекательным выбором для решения широкого спектра задач,
+включая математическое моделирование, анализ данных, машинное обучение и
+многое другое.</p>
+<p>OpenModelica - это свободная и открытая система для моделирования и
+симуляции динамических систем. Она предоставляет интегрированную среду
+разработки, где пользователи могут создавать, редактировать и
+анализировать модели на основе языка Modelica. OpenModelica поддерживает
+множество различных областей применения, включая инженерные системы,
+энергетику, теплофизику и другие.</p>
+<h2 id="задание">Задание</h2>
+<p>Формула определения номера задания: (S<sub>n</sub> mod N) +1, где Sn
+— номер студбилета, N — количество заданий.</p>
+<p>Для вычисления нашего варианта воспользуемся питоном:(рис. <span
+class="citation" data-cites="fig:001">[-@fig:001]</span>)</p>
+<figure id="fig:001">
+<img src="8.jpg" style="width:70.0%" alt="Вариант задания" />
+<figcaption aria-hidden="true">Вариант задания</figcaption>
+</figure>
+<h2 id="задание-1">Задание</h2>
+<p><i>Вариант 17 </i></p>
+<p>На море в тумане катер береговой охраны преследует лодку браконьеров.
+Через определенный промежуток времени туман рассеивается, и лодка
+обнаруживается на расстоянии 7,6 км от катера. Затем лодка снова
+скрывается в тумане и уходит прямолинейно в неизвестном направлении.
+Известно, что скорость катера в 2,6 раза больше скорости браконьерской
+лодки. 1. Запишите уравнение, описывающее движение катера, с начальными
+условиями для двух случаев (в зависимости от расположения катера
+относительно лодки в начальный момент времени). 2. Постройте траекторию
+движения катера и лодки для двух случаев. 3. Найдите точку пересечения
+траектории катера и лодки</p>
+<h2 id="выполнение-лабораторной-работы">Выполнение лабораторной
+работы</h2>
+<p>Для выполнения лабораторной работы нам потребуется установка
+приложения Julia. Для этого скачаем нужную нам версию (для ОС Windows)
+на <a href="https://julialang.org/downloads/">официальном сайте</a>.
+(рис. <span class="citation"
+data-cites="fig:002">[-@fig:002]</span>)</p>
+<figure id="fig:002">
+<img src="1.jpg" style="width:70.0%" alt="Установка Julia" />
+<figcaption aria-hidden="true">Установка Julia</figcaption>
+</figure>
+<p>После загрузки и установки наше приложние откроется следующим
+образом: (рис. <span class="citation"
+data-cites="fig:003">[-@fig:003]</span>)</p>
+<figure id="fig:003">
+<img src="2.jpg" style="width:70.0%" alt="Окно Julia" />
+<figcaption aria-hidden="true">Окно Julia</figcaption>
+</figure>
+<h2 id="выполнение-лабораторной-работы-1">Выполнение лабораторной
+работы</h2>
+<p>Далее, для решения поставленной задачи, необходимо установить
+несколько библиотек для дальнейшей работы. Библиотека Plots
+предооставляет простой и гибкий интерфейс для создания графиков, а
+библиотека (рис. <span class="citation"
+data-cites="fig:004">[-@fig:004]</span>) (рис. <span class="citation"
+data-cites="fig:005">[-@fig:005]</span>) (рис. <span class="citation"
+data-cites="fig:006">[-@fig:006]</span>) (рис. <span class="citation"
+data-cites="fig:007">[-@fig:007]</span>) (рис. <span class="citation"
+data-cites="fig:008">[-@fig:008]</span>)</p>
+<figure id="fig:004">
+<img src="3.jpg" style="width:70.0%"
+alt="Команды по установке библиотеки Plots" />
+<figcaption aria-hidden="true">Команды по установке библиотеки
+Plots</figcaption>
+</figure>
+<figure id="fig:005">
+<img src="4.jpg" style="width:70.0%"
+alt="Команды по установке библиотеки Plots" />
+<figcaption aria-hidden="true">Команды по установке библиотеки
+Plots</figcaption>
+</figure>
+<figure id="fig:007">
+<img src="6.jpg" style="width:70.0%" alt="Установка библиотеки Plots" />
+<figcaption aria-hidden="true">Установка библиотеки Plots</figcaption>
+</figure>
+<h2 id="выполнение-лабораторной-работы-2">Выполнение лабораторной
+работы</h2>
+<figure id="fig:006">
+<img src="5.jpg" style="width:70.0%"
+alt="Команды по установке библиотеки DifferentialEquations" />
+<figcaption aria-hidden="true">Команды по установке библиотеки
+DifferentialEquations</figcaption>
+</figure>
+<figure id="fig:008">
+<img src="7.jpg" style="width:70.0%"
+alt="Установка библиотеки DifferentialEquations" />
+<figcaption aria-hidden="true">Установка библиотеки
+DifferentialEquations</figcaption>
+</figure>
+<h2 id="код-лабораторной-работы">Код лабораторной работы</h2>
+<pre><code>using Plots
+using DifferentialEquations</code></pre>
+<p>Подключаем библиотеки для дальнейшей работы.</p>
+<pre><code>const a, n = 7.6, 2.6
+const r0, r0_2 = a / (n + 1), a / (n - 1)
+const T, T_2 = (0, 2 * pi), (-pi, pi)</code></pre>
+<p>Определение констант и начальных условий. Задаём константы a и n из
+условия задачи.</p>
+<p>r0 и r0_2 — начальные значения радиуса для двух разных задач ОДУ,
+рассчитанные на основе a и n.</p>
+<p>T и T_2 — временные интервалы для решения каждой из задач.</p>
+<h2 id="код-лабораторной-работы-1">Код лабораторной работы</h2>
+<pre><code>F(u, p, t) = u / sqrt(n^2 - 1)</code></pre>
+<p>Определение Функции Для ОДУ</p>
+<p>F — функция, определяющая ОДУ, где u — зависимая переменная (радиус),
+t — независимая переменная (время), и p — параметры уравнения, которые в
+данном случае не используются. Уравнение описывает изменение радиуса со
+временем.</p>
+<pre><code>problem1 = ODEProblem(F, r0, T)
+result1 = solve(problem1, abstol=1e-8, reltol=1e-8)
+
+problem2 = ODEProblem(F, r0_2, T_2)
+result2 = solve(problem2, abstol=1e-8, reltol=1e-8)</code></pre>
+<p>Создаются две задачи ОДУ (problem1 и problem2) с использованием
+функции F, начальных значений и временных интервалов. solve решает эти
+задачи с заданными абсолютной (abstol) и относительной (reltol)
+точностями.</p>
+<h2 id="код-лабораторной-работы-2">Код лабораторной работы</h2>
+<pre><code>plt1 = plot(proj=:polar, aspect_ratio=:equal, dpi=1000, legend=true, bg=:white)
+plot!(plt1, result1.t, result1.u, label=&quot;Путь катера&quot;, color=:red, lw=1, linestyle=:dot)
+
+max_radius1 = maximum(result1.u)
+random_angle1 = result1.t[rand(1:length(result1.t))]
+plot!(plt1, [0, random_angle1], [0, max_radius1], label=&quot;Путь лодки&quot;, color=:magenta, lw=1, linestyle=:dashdot)</code></pre>
+<p>Создаем полярный график с равным соотношением сторон, высоким
+разрешением, легендой и белым фоном. Добавляем на график plt1 кривую,
+представляющую решение result1 (путь катера), с красной пунктирной
+линией.</p>
+<h2 id="код-лабораторной-работы-3">Код лабораторной работы</h2>
+<p>Вычисляем максимальный радиус из решения и выбирает случайный угол
+для иллюстрации предполагаемого пути лодки. Добавляем линию для пути
+лодки с штрихпунктирным стилем.</p>
+<pre><code>plt2 = plot(proj=:polar, aspect_ratio=:equal, dpi=1000, legend=true, bg=:white)
+plot!(plt2, result2.t, result2.u, label=&quot;Путь катера&quot;, color=:red, lw=1, linestyle=:dot)
+
+max_radius2 = maximum(result2.u)
+random_angle2 = result2.t[rand(1:length(result2.t))]
+plot!(plt2, [0, random_angle2], [0, max_radius2], label=&quot;Путь лодки&quot;, color=:magenta, lw=1, linestyle=:dashdot)</code></pre>
+<p>Аналогичные шаги выполняются для второй задачи (plt2).</p>
+<h2 id="код-лабораторной-работы-4">Код лабораторной работы</h2>
+<pre><code>savefig(plt1, &quot;lab02_01.png&quot;)
+savefig(plt2, &quot;lab02_02.png&quot;)</code></pre>
+<p>Сохраняем созданные графики в файлы PNG для дальнейшего использования
+или анализа.</p>
+<p>Теперь мы переходим в консоль Windows и запускаем наш файл. (рис.
+<span class="citation" data-cites="fig:009">[-@fig:009]</span>)</p>
+<figure id="fig:009">
+<img src="9.jpg" style="width:70.0%" alt="Запуск программы" />
+<figcaption aria-hidden="true">Запуск программы</figcaption>
+</figure>
+<h2 id="код-лабораторной-работы-5">Код лабораторной работы</h2>
+<p>В результате выполнения в той же папке, где находилась наша
+программа, появится два графика. (рис. <span class="citation"
+data-cites="fig:010">[-@fig:010]</span>) (рис. <span class="citation"
+data-cites="fig:011">[-@fig:011]</span>)</p>
+<figure id="fig:010">
+<img src="lab02_01.png" style="width:70.0%" alt="График 1" />
+<figcaption aria-hidden="true">График 1</figcaption>
+</figure>
+<figure id="fig:011">
+<img src="lab02_02.png" style="width:70.0%" alt="График 2" />
+<figcaption aria-hidden="true">График 2</figcaption>
+</figure>
+<h2 id="примечание">Примечание</h2>
+<p>К сожалению, OpenModelica не предоставляет графики для полярных
+координат. Но мы можем написать реализацию программы.</p>
+<pre><code>model Problem1
+constant Real a = 7.6;
+constant Real n = 2.6;
+constant Real r0 = a / (n + 1);
+constant Real T_start = 0;
+constant Real T_end = 2 * Modelica.Constants.pi;
+Real u;
+
+equation
+der(u) = u / sqrt(n^2 - 1);
+
+initial equation
+u = r0;
+
+end Problem1;</code></pre>
+<h2 id="примечание-1">Примечание</h2>
+<pre><code>model Problem2
+constant Real a = 7.6;
+constant Real n = 2.6;
+constant Real r0_2 = a / (n - 1);
+constant Real T_start = -Modelica.Constants.pi;
+constant Real T_end = Modelica.Constants.pi;
+Real u;
+
+equation
+der(u) = u / sqrt(n^2 - 1);
+
+initial equation
+u = r0_2;
+
+end Problem2;</code></pre>
+<h2 id="заключение">Заключение</h2>
+<p>Познакомились с приложениями Julia и OpenModelica. Реализовали задачу
+о погоне, вывели траектории при помощи графиков.</p>
+<h2 id="библиографическая-справка">Библиографическая справка</h2>
+<p>[1] Документация по Julia: https://docs.julialang.org/en/v1/</p>
+<p>[2] Документация по OpenModelica: https://openmodelica.org/</p>
