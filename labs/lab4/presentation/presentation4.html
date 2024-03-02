@@ -1,0 +1,211 @@
+<h2 id="цель-работы">Цель работы</h2>
+<p>Построить модели гармонических колебаний, используя Julia и
+OpenModelica.</p>
+<h2 id="теоретическое-введение">Теоретическое введение</h2>
+<p>Фазовый портрет - это графическое представление динамики системы в
+фазовом пространстве, где каждое состояние системы представлено точкой.
+На графике обычно изображаются значения различных переменных системы в
+зависимости друг от друга. Фазовый портрет позволяет визуализировать
+поведение системы со временем и выявить основные характеристики ее
+динамики, такие как устойчивость, периодичность, предельные циклы и т.
+д. Фазовые портреты широко используются в различных науках, включая
+физику, математику, биологию и инженерные науки, для анализа и
+моделирования динамических систем [1].</p>
+<p>Дифференциальные уравнения (ДУ) с правой частью равной нулю, или
+однородные дифференциальные уравнения, представляют собой уравнения, в
+которых отсутствует внешнее воздействие или источник изменений. Они
+описывают системы, в которых изменения зависят только от текущего
+состояния системы и ее параметров. Решение таких уравнений позволяет
+определить стационарные состояния системы и проанализировать ее
+устойчивость к возмущениям. Однородные дифференциальные уравнения широко
+применяются в различных областях науки и инженерии для моделирования и
+анализа различных процессов, таких как колебания, динамика систем
+управления, теплопроводность и диффузия веществ.</p>
+<h2 id="section"></h2>
+<p>Дифференциальные уравнения с правой частью, зависящей от переменных
+или параметров системы, описывают динамику системы с учетом внешних
+воздействий или источников изменений. В таких уравнениях правая часть
+представляет собой функцию времени, переменных системы или других
+параметров, которая описывает воздействие на систему в каждый момент
+времени. Решение таких уравнений позволяет моделировать поведение
+системы в различных условиях и прогнозировать ее развитие во времени.
+Дифференциальные уравнения с переменной правой частью находят применение
+в широком спектре областей, включая физику, биологию, экономику,
+механику и другие науки, где они используются для анализа и
+моделирования различных процессов и явлений [2].</p>
+<h2 id="задание">Задание</h2>
+<p><i>Вариант 17 </i></p>
+<p>Постройте фазовый портрет гармонического осциллятора и решение
+уравнения гармонического осциллятора для следующих случаев:</p>
+<ol type="1">
+<li><p>Колебания гармонического осциллятора без затуханий и без действий
+внешней силы: <span
+class="math display"><em>x</em>″ + 12<em>x</em> = 0</span></p></li>
+<li><p>Колебания гармонического осциллятора c затуханием и без действий
+внешней силы: <span
+class="math display"><em>x</em>″ + 11<em>x</em>′ + 2<em>x</em> = 0</span></p></li>
+<li><p>Колебания гармонического осциллятора c затуханием и под действием
+внешней силы: <span
+class="math display"><em>x</em>″ + 11<em>x</em>′ + 2<em>x</em> = 2<em>c</em><em>o</em><em>s</em>(2<em>t</em>)</span></p></li>
+</ol>
+<p>На интервале t [0; 51] (шаг 0.05) с начальными условиями
+x<sub>0</sub> = 0.5, y<sub>0</sub> = 1.</p>
+<h2 id="выполнение-лабораторной-работы">Выполнение лабораторной
+работы</h2>
+<h2 id="julia">Julia</h2>
+<p>Напишем код на Jilia для случая 1: колебания гармонического
+осциллятора без затуханий и без действий внешней силы.</p>
+<p>using DifferentialEquations, Plots</p>
+<pre><code>function oscillator1!(du, u, p, t)
+    du[1] = u[2]
+    du[2] = -12*u[1]
+
+u0 = [0.5, 1.0]   
+tspan = (0.0, 51.0) 
+
+prob1 = ODEProblem(oscillator1!, u0, tspan)
+sol1 = solve(prob1, Tsit5(), reltol=1e-8, abstol=1e-8)
+
+plot(sol, title = &quot;Harmonic Oscillator without Damping&quot;, xlabel = &quot;Time&quot;, ylabel = &quot;Position/Velocity&quot;)
+savefig(&quot;oscillator1_solution.png&quot;)</code></pre>
+<h2 id="section-1"></h2>
+<p>Запустим код при помощи командной строки и получим два изображения:
+Cм. <a href="#fig:001">рис. 1</a>, Cм. <a href="#fig:002">рис. 2</a></p>
+<figure id="fig:001">
+<img src="oscillator1_phase_portrait.png" style="width:70.0%"
+alt="Фазовый портрет. Случай 1." />
+<figcaption aria-hidden="true">Фазовый портрет. Случай 1.</figcaption>
+</figure>
+<h2 id="section-2"></h2>
+<figure id="fig:002">
+<img src="oscillator1_solution.png" style="width:70.0%"
+alt="Решение уравнения. Случай 1." />
+<figcaption aria-hidden="true">Решение уравнения. Случай 1.</figcaption>
+</figure>
+<h2 id="section-3"></h2>
+<p>Напишем код на Jilia для случая 2: колебания гармонического
+осциллятора c затуханием и без действий внешней силы.</p>
+<pre><code>using DifferentialEquations, Plots
+
+function oscillator2!(du, u, p, t)
+    du[1] = u[2]
+    du[2] = -2*u[1] - 11*u[2]
+end
+
+u0 = [0.5, 1.0]
+tspan = (0.0, 5.0)
+
+prob2 = ODEProblem(oscillator2!, u0, tspan)
+sol2 = solve(prob2, Tsit5(), reltol=1e-8, abstol=1e-8)
+
+plot(sol2, title=&quot;Damped Harmonic Oscillator without External Force&quot;, xlabel=&quot;Time&quot;, ylabel=&quot;Position / Velocity&quot;)
+savefig(&quot;oscillator2_solution.png&quot;)
+
+plot(sol2, vars=(1,2), title=&quot;Phase Portrait&quot;, xlabel=&quot;Position&quot;, ylabel=&quot;Velocity&quot;)
+savefig(&quot;oscillator2_phase_portrait.png&quot;)</code></pre>
+<h2 id="section-4"></h2>
+<p>Запустим код при помощи командной строки и получим два изображения:
+Cм. <a href="#fig:003">рис. 3</a>, Cм. <a href="#fig:004">рис. 4</a></p>
+<figure id="fig:003">
+<img src="oscillator2_phase_portrait.png" style="width:70.0%"
+alt="Фазовый портрет. Случай 2." />
+<figcaption aria-hidden="true">Фазовый портрет. Случай 2.</figcaption>
+</figure>
+<h2 id="section-5"></h2>
+<figure id="fig:004">
+<img src="oscillator2_solution.png" style="width:70.0%"
+alt="Решение уравнения. Случай 2." />
+<figcaption aria-hidden="true">Решение уравнения. Случай 2.</figcaption>
+</figure>
+<h2 id="section-6"></h2>
+<p>Напишем код на Jilia для случая 3: колебания гармонического
+осциллятора c затуханием и под действием внешней силы.</p>
+<pre><code>using DifferentialEquations, Plots
+
+function forced_damped_oscillator!(dx, x, params, t)
+    dx[1] = x[2]
+    dx[2] = 2*cos(2*t) - 2*x[1] - 21*x[2]
+end
+
+x0 = [0.5, 1.0]  # Начальные условия для смещения и скорости
+tspan = (0.0, 10.0)  # Диапазон времени
+
+prob = ODEProblem(forced_damped_oscillator!, x0, tspan)
+sol = solve(prob)</code></pre>
+<h2 id="section-7"></h2>
+<p>Запустим код при помощи командной строки и получим два изображения:
+Cм. <a href="#fig:005">рис. 5</a>, Cм. <a href="#fig:006">рис. 6</a></p>
+<p><img src="oscillator_phase_portrait_julia.png" id="fig:003"
+style="width:70.0%" alt="Фазовый портрет. Случай 3." /> ## <img
+src="oscillator_solution_julia.png" id="fig:004" style="width:70.0%"
+alt="Решение уравнения. Случай 3." /></p>
+<h2 id="openmodelica">OpenModelica</h2>
+<p>Напишем код на OpenModelica для случая 1: колебания гармонического
+осциллятора без затуханий и без действий внешней силы.</p>
+<pre><code>model HarmonicOscillatorWithoutDamping
+    Real x(start = 0.5);
+    Real y(start = 1.0);
+equation
+    der(x) = v;
+    der(v) = -12*x    
+end HarmonicOscillatorWithoutDamping;</code></pre>
+<h2 id="section-8"></h2>
+<p>Запустим код при помощи кнопок “проверить модель” -&gt; “установки
+симуляции” -&gt; “симулировать”. Не забываем в найстройках указать
+заданные нам ачальные условияю Cм. <a href="#fig:007">рис. 7</a></p>
+<p><img src="0.jpg" id="fig:007" style="width:70.0%"
+alt="Установка начальных параметров" /> ## Нажимаем галочки x и v для
+отображения графиков: Cм. <a href="#fig:008">рис. 8</a>, Cм. <a
+href="#fig:009">рис. 9</a></p>
+<figure id="fig:008">
+<img src="OM_1_2.jpg" style="width:70.0%"
+alt="Фазовый портрет. Случай 1." />
+<figcaption aria-hidden="true">Фазовый портрет. Случай 1.</figcaption>
+</figure>
+<h2 id="section-9"></h2>
+<figure id="fig:009">
+<img src="OM_1_1.jpg" style="width:70.0%"
+alt="Решение уравнения. Случай 1." />
+<figcaption aria-hidden="true">Решение уравнения. Случай 1.</figcaption>
+</figure>
+<h2 id="section-10"></h2>
+<p>Напишем код для случая 2: колебания гармонического осциллятора c
+затуханием и без действий внешней силы.</p>
+<pre><code>model DampedOscillatorWithoutExternalForce
+Real x(start=0.5); 
+Real v(start=1.0); 
+initial equation
+equation
+der(x) = v; 
+der(v) = -2*x - 11*v; 
+end DampedOscillatorWithoutExternalForce;</code></pre>
+<h2 id="section-11"></h2>
+<p>Запустим код. Нажимаем галочки x и v для отображения графиков: Cм. <a
+href="#fig:010">рис. 10</a>, Cм. <a href="#fig:011">рис. 11</a></p>
+<p><img src="OM_2_2.jpg" id="fig:010" style="width:70.0%"
+alt="Фазовый портрет. Случай 2." /> ## <img src="OM_2_1.jpg"
+id="fig:011" style="width:70.0%" alt="Решение уравнения. Случай 2." />
+## Напишем код на OpenModelica для случая 3: колебания гармонического
+осциллятора c затуханием и под действием внешней силы. .</p>
+<pre><code>model ForcedDampedOscillator
+Real x(start=0.5); 
+Real v(start=1.0); 
+equation
+der(x) = v;
+der(v) = 2*cos(2*time) - 2*x - 21*v; 
+end ForcedDampedOscillator;</code></pre>
+<h2 id="section-12"></h2>
+<p>Запустим код. Нажимаем галочки x и v для отображения графиков: Cм. <a
+href="#fig:012">рис. 12</a>, Cм. <a href="#fig:013">рис. 13</a></p>
+<p><img src="OM_3_2.jpg" id="fig:012" style="width:70.0%"
+alt="Фазовый портрет. Случай 2." /> ## <img src="OM_3_1.jpg"
+id="fig:013" style="width:70.0%"
+alt="Решение уравнения. Случай 2." /></p>
+<h2 id="заключение">Заключение</h2>
+<p>Реализовали модели для гармонических колебаний. Построили графики
+фазовых портретов и решения дифференциальных уравнений.</p>
+<h2 id="библиографическая-справка">Библиографическая справка</h2>
+<p>[1] Фазовое пространство:
+https://ru.m.wikipedia.org/wiki/%D0%A4%D0%B0%D0%B7%D0%BE%D0%B2%D0%BE%D0%B5_%D0%BF%D1%80%D0%BE%D1%81%D1%82%D1%80%D0%B0%D0%BD%D1%81%D1%82%D0%B2%D0%BE</p>
+<p>[2] Дифференциальные уравнения:
+https://ru.wikipedia.org/wiki/%D0%94%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5_%D1%83%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5</p>
