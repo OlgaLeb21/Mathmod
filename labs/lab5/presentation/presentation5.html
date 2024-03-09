@@ -1,0 +1,188 @@
+<h2 id="цель-работы">Цель работы</h2>
+<p>Построить простейшую модель взаимодействия двух видов типа «хищник —
+жертва» - модель Лотки-Вольтерры.</p>
+<h2 id="теоретическое-введение">Теоретическое введение</h2>
+<p>Модель Лотки-Вольтерры является классическим примером математической
+модели взаимодействия между хищниками и их жертвами в экологии.
+Названная в честь двух итальянских ученых, Альфредо Лотки и Витторио
+Вольтерры, она представляет собой систему дифференциальных уравнений,
+которые описывают динамику популяций обоих видов во времени.</p>
+<p>В модели учитывается два вида организмов: хищники и их жертвы.
+Предполагается, что популяции обоих видов развиваются в изолированной
+среде без внешних влияний [1].</p>
+<h2 id="задание">Задание</h2>
+<p><i>Вариант 17 </i></p>
+<p>Для модели «хищник-жертва»:</p>
+<p><span class="math display">$$
+\begin{cases}
+\frac{dx}{dt} = -0.69x(t) + 0.068x(t)y(t) \\
+\frac{dy}{dt} = 0.67y(t) - 0.066x(t)y(t)
+\end{cases}
+$$</span></p>
+<p>Постройте график зависимости численности хищников от численности
+жертв, а также графики изменения численности хищников и численности
+жертв при следующих начальных условиях x<sub>0</sub> = 4, y<sub>0</sub>
+= 11. Найдите стационарное состояние системы.</p>
+<h1 id="выполнение-лабораторной-работы">Выполнение лабораторной
+работы</h1>
+<h2 id="julia">Julia</h2>
+<p>Напишем код на Jilia для случая 1: нестационарное состояние
+системы.</p>
+<pre><code>using Plots, DifferentialEquations
+
+x0 = 4
+y0 = 11
+
+a = 0.69
+b = 0.068
+c = 0.67
+d = 0.66
+
+function ode_fn(du, u, p, t)
+    x, y = u
+    du[1] = -a * u[1] + b * u[1] * u[2]
+    du[2] = c * u[2] - d * u[1] * u[2]
+end</code></pre>
+<h2 id="julia-1">Julia</h2>
+<pre><code>v0 = [x0, y0]
+tspan = (0.0, 60.0)
+prob = ODEProblem(ode_fn, v0, tspan)
+sol = solve(prob, dtmax=0.05)
+X = [u[1] for u in sol.u]
+Y = [u[2] for u in sol.u]
+T = [t for t in sol.t]
+
+plt = plot(dpi=300, legend=false)
+plot!(plt, X, Y, color=:blue)
+savefig(plt, &quot;lab05_1.png&quot;)
+
+plt2 = plot(dpi=300, legend=true)
+plot!(plt2, T, X, label=&quot;Численность жертв&quot;, color=:red)
+plot!(plt2, T, Y, label=&quot;Численность хищников&quot;, color=:green)
+savefig(plt2, &quot;lab05_2.png&quot;)</code></pre>
+<h2 id="julia-2">Julia</h2>
+<p>Запустим код при помощи командной строки и получим два изображения:
+Cм. <a href="#fig:001">рис. 1</a>, Cм. <a href="#fig:002">рис. 2</a></p>
+<figure id="fig:001">
+<img src="lab05_1.png" style="width:70.0%"
+alt="Динамика популяций хищников относительно жертв" />
+<figcaption aria-hidden="true">Динамика популяций хищников относительно
+жертв</figcaption>
+</figure>
+<h2 id="julia-3">Julia</h2>
+<figure id="fig:002">
+<img src="lab05_2.png" style="width:70.0%"
+alt="Изменение популяций хищников и жертв по времени" />
+<figcaption aria-hidden="true">Изменение популяций хищников и жертв по
+времени</figcaption>
+</figure>
+<h2 id="julia-4">Julia</h2>
+<p>Напишем код на Jilia для случая 2: стационарное состояние
+системы.</p>
+<pre><code>using Plots, DifferentialEquations
+
+a = 0.69
+b = 0.068
+c = 0.67
+d = 0.66 
+
+x0 = c / d 
+y0 = a / b
+
+function ode_fn(du, u, p, t)
+    x, y = u
+    du[1] = -a * u[1] + b * u[1] * u[2]
+    du[2] = c * u[2] - d * u[1] * u[2]
+end</code></pre>
+<h2 id="julia-5">Julia</h2>
+<pre><code>v0 = [x0, y0]
+tspan = (0.0, 60.0)
+prob = ODEProblem(ode_fn, v0, tspan)
+sol = solve(prob, dtmax=0.05)
+X = [u[1] for u in sol.u]
+Y = [u[2] for u in sol.u]
+T = [t for t in sol.t]
+
+plt2 = plot(dpi=300, legend=true)
+plot!(plt2, T, X, label=&quot;Численность жертв&quot;, color=:red)
+plot!(plt2, T, Y, label=&quot;Численность хищников&quot;, color=:green)
+savefig(plt2, &quot;lab05_3.png&quot;)</code></pre>
+<h2 id="julia-6">Julia</h2>
+<p>Запустим код при помощи командной строки и получим изображениe: Cм.
+<a href="#fig:003">рис. 3</a></p>
+<figure id="fig:003">
+<img src="lab05_3.png" style="width:70.0%"
+alt="Стационарное состояние системы" />
+<figcaption aria-hidden="true">Стационарное состояние
+системы</figcaption>
+</figure>
+<p>В стационарном состоянии решение будет представлять собой точку.</p>
+<h2 id="openmodelica">OpenModelica</h2>
+<p>Напишем код на OpenModelica для случая 1: нестационарное состояние
+системы.</p>
+<pre><code>model PredatorPrey
+parameter Real a = 0.69;
+parameter Real b = 0.068;
+parameter Real c = 0.67;
+parameter Real d = 0.66;
+
+parameter Real x0 = 4;
+parameter Real y0 = 11;
+
+Real x(start = x0);
+Real y(start = y0);
+
+equation
+der(x) = -a * x + b * x * y;
+der(y) = c * y - d * x * y;
+
+end PredatorPrey;</code></pre>
+<h2 id="openmodelica-1">OpenModelica</h2>
+<p>Запустим код при помощи кнопок “проверить модель” -&gt; “установки
+симуляции” -&gt; “симулировать”. Не забываем в найстройках указать
+заданные нам начальные условия Cм. <a href="#fig:004">рис. 4</a>, Cм. <a
+href="#fig:005">рис. 5</a></p>
+<figure id="fig:004">
+<img src="OM_1.jpg" style="width:70.0%"
+alt="Динамика популяций хищников относительно жертв" />
+<figcaption aria-hidden="true">Динамика популяций хищников относительно
+жертв</figcaption>
+</figure>
+<h2 id="openmodelica-2">OpenModelica</h2>
+<figure id="fig:005">
+<img src="OM_2.jpg" style="width:70.0%"
+alt="Изменение популяций хищников и жертв по времени" />
+<figcaption aria-hidden="true">Изменение популяций хищников и жертв по
+времени</figcaption>
+</figure>
+<h2 id="openmodelica-3">OpenModelica</h2>
+<p>Напишем код для случая 2: стационарное состояние системы.</p>
+<pre><code>model lab05_2
+Real a = 0.69;
+Real b = 0.068;
+Real c = 0.67;
+Real d = 0.066;
+Real x;
+Real y;
+initial equation
+x = c / d;
+y = a / b;
+equation
+der(x) = -a*x + b*x*y;
+der(y) = c*y - d*x*y;
+end lab05_2;</code></pre>
+<h2 id="openmodelica-4">OpenModelica</h2>
+<p>Запустим код. Нажимаем галочки x и v для отображения графиков: Cм. <a
+href="#fig:006">рис. 6</a></p>
+<figure id="fig:006">
+<img src="OM_3.jpg" style="width:70.0%"
+alt="Стационарное состояние системы" />
+<figcaption aria-hidden="true">Стационарное состояние
+системы</figcaption>
+</figure>
+<h2 id="заключение">Заключение</h2>
+<p>Построили простейшую модель взаимодействия двух видов типа «хищник —
+жертва» - модель Лотки-Вольтерры.</p>
+<h2 id="библиографическая-справка">Библиографическая справка</h2>
+<p>[1] Модель хищник-жертва:
+https://math-it.petrsu.ru/users/semenova/MathECO/Lections/Lotka_Volterra.pdf</p>
