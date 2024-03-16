@@ -1,0 +1,291 @@
+\begin{frame}{Цель работы}
+\phantomsection\label{ux446ux435ux43bux44c-ux440ux430ux431ux43eux442ux44b}
+Рассмотреть простейшую задачу об эпидемии. Построить графики для двух
+случаев на Julia и OpenModelica: особи популяции изолированы / особи
+могут заражать друг друга.
+\end{frame}
+
+\begin{frame}{Теоретическое введение}
+\phantomsection\label{ux442ux435ux43eux440ux435ux442ux438ux447ux435ux441ux43aux43eux435-ux432ux432ux435ux434ux435ux43dux438ux435}
+Модель SIR является одной из наиболее известных и простых моделей для
+описания распространения инфекционных заболеваний в популяции. Эта
+модель разделяет популяцию на три основные группы: восприимчивые к
+инфекции (S, Susceptible), инфицированные (I, Infected) и выздоровевшие
+или иммунизированные (R, Recovered). Основное предположение модели
+заключается в том, что переход индивидуума из одного состояния в другое
+происходит с определёнными скоростями, которые могут быть описаны
+системой обыкновенных дифференциальных уравнений. {[}1{]}.
+\end{frame}
+
+\begin{frame}{Задание}
+\phantomsection\label{ux437ux430ux434ux430ux43dux438ux435}
+Вариант 17
+
+На одном острове вспыхнула эпидемия. Известно, что из всех проживающих
+на острове \((N=10300)\) в момент начала эпидемии \((t=0)\) число
+заболевших людей (являющихся распространителями инфекции) \(I(0)=55\), А
+число здоровых людей с иммунитетом к болезни \(R(0)=27\). Таким образом,
+число людей восприимчивых к болезни, но пока здоровых, в начальный
+момент времени \(S(0)=N-I(0)-R(0)\). Постройте графики изменения числа
+особей в каждой из трех групп.
+
+Рассмотрите, как будет протекать эпидемия в случае:
+
+\begin{enumerate}
+\item
+  \(I(0)\leq I^*\)
+\item
+  \(I(0)>I^*\)
+\end{enumerate}
+
+Построить графики изменения числа особей в каждой из трех групп \(S\),
+\(I\), \(R\). Рассмотреть, как будет протекать эпидемия в этих случаях.
+\end{frame}
+
+\section{Выполнение лабораторной
+работы}\label{ux432ux44bux43fux43eux43bux43dux435ux43dux438ux435-ux43bux430ux431ux43eux440ux430ux442ux43eux440ux43dux43eux439-ux440ux430ux431ux43eux442ux44b}
+
+\section{Julia}\label{julia}
+
+\begin{frame}[fragile]{Julia. Случай 1}
+\phantomsection\label{julia.-ux441ux43bux443ux447ux430ux439-1}
+Напишем код на Jilia для случая 1: особи изолированы.
+
+\begin{verbatim}
+using Plots, DifferentialEquations
+
+N = 10300 # общее число особей
+I0 = 55 # заболевшие особи
+R0 = 27 # особи с иммунитетом
+S0 = N - I0 - R0 # здоровые, но восприимчивые особи
+
+alpha = 0.01 # коэффициент заболеваемости
+beta = 0.02 # коэффициент выздоровления
+
+#I0 <= I*
+function ode_fn(du, u, p, t)
+    S, I, R = u
+    du[1] = 0
+    du[2] = -beta*u[2]
+    du[3] = beta*I
+end
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Julia. Случай 1}
+\phantomsection\label{julia.-ux441ux43bux443ux447ux430ux439-1-1}
+\begin{verbatim}
+v0 = [S0, I0, R0]
+tspan = (0.0, 60.0)
+prob = ODEProblem(ode_fn, v0, tspan)
+sol = solve(prob, dtmax = 0.05)
+S = [u[1] for u in sol.u]
+I = [u[2] for u in sol.u]
+R = [u[3] for u in sol.u]
+T = [t for t in sol.t]
+
+plt = plot(dpi = 600, legend = :topright)
+plot!(plt, T, S, label = "Восприимчивые особи", color = :blue)
+plot!( plt, T, I, label = "Инфицированные особи", color = :green)
+plot!(plt, T, R, label = "Особи с иммунитетом", color = :red)
+
+savefig(plt, "lab06_1.png")
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{Julia. Случай 1}
+\phantomsection\label{julia.-ux441ux43bux443ux447ux430ux439-1-2}
+Запустим код при помощи командной строки и получим изображение с
+динамикой численности популяции: Cм. \hyperlink{fig:001}{рис. 1}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\textwidth,height=\textheight]{lab06_1.png}
+\caption{График численности особей SIR: больные
+изолированы}\label{fig:001}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Julia. Случай 2}
+\phantomsection\label{julia.-ux441ux43bux443ux447ux430ux439-2}
+Напишем код на Jilia для случая 2: больные могут заражать особей группы
+S.
+
+\begin{verbatim}
+using Plots, DifferentialEquations
+
+N = 10300 # общее число особей
+I0 = 55 # заболевшие особи
+R0 = 27 # особи с иммунитетом
+S0 = N - I0 - R0 # здоровые, но восприимчивые особи
+
+alpha = 0.01 # коэффициент заболеваемости
+beta = 0.02 # коэффициент выздоровления
+
+#I0 > I*
+function ode_fn(du, u, p, t)
+    S, I, R = u
+    du[1] = -alpha*u[1]
+    du[2] = alpha*u[1] - beta*u[2]
+    du[3] = beta*I
+end
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Julia. Случай 2}
+\phantomsection\label{julia.-ux441ux43bux443ux447ux430ux439-2-1}
+\begin{verbatim}
+v0 = [S0, I0, R0]
+tspan = (0.0, 120.0)
+prob = ODEProblem(ode_fn, v0, tspan)
+sol = solve(prob, dtmax=0.05)
+S = [u[1] for u in sol.u]
+I = [u[2] for u in sol.u]
+R = [u[3] for u in sol.u]
+T = [t for t in sol.t]
+
+plt = plot(dpi=600, legend=:right)
+plot!(plt, T, S, label="Восприимчивые особи", color=:blue)
+plot!(plt, T, I, label="Инфицированные особи", color=:green)
+plot!(plt, T, R, label="Особи с иммунитетом", color=:red)
+
+savefig(plt, "lab06_2.png")
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{Julia. Случай 2}
+\phantomsection\label{julia.-ux441ux43bux443ux447ux430ux439-2-2}
+Запустим код при помощи командной строки и получим изображениe: Cм.
+\hyperlink{fig:002}{рис. 2}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\textwidth,height=\textheight]{lab06_2.png}
+\caption{График численности SIR: больные могут заражать особей группы
+S}\label{fig:002}
+\end{figure}
+\end{frame}
+
+\section{OpenModelica}\label{openmodelica}
+
+\begin{frame}[fragile]{OpenModelica. Случай 1}
+\phantomsection\label{openmodelica.-ux441ux43bux443ux447ux430ux439-1}
+Напишем код на OpenModelica для случая 1: особи изолированы.
+
+\begin{verbatim}
+model lab06_1
+Real N = 10300;
+Real I;
+Real R;
+Real S;
+Real alpha = 0.01;
+Real beta = 0.02;
+initial equation
+I = 55;
+R = 27;
+S = N - I - R;
+equation
+der(S) = 0;
+der(I) = -beta*I;
+der(R) = beta*I;
+end lab06_1;
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{OpenModelica. Случай 1}
+\phantomsection\label{openmodelica.-ux441ux43bux443ux447ux430ux439-1-1}
+Запустим код при помощи кнопок ``проверить модель'' -\textgreater{}
+``симулировать''. Не забываем в настройках указать заданные нам
+начальные условия (время). Cм. \hyperlink{fig:003}{рис. 3}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\textwidth,height=\textheight]{1.jpg}
+\caption{Графики численности особей SIR: больные
+изолированы}\label{fig:003}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{OpenModelica. Случай 2}
+\phantomsection\label{openmodelica.-ux441ux43bux443ux447ux430ux439-2}
+Напишем код для случая 2: ольные могут заражать особей группы S.
+
+\begin{verbatim}
+model lab06_2
+Real N = 10300;
+Real I;
+Real R;
+Real S;
+Real alpha = 0.01;
+Real beta = 0.02;
+initial equation
+I = 55;
+R = 27;
+S = N - I - R;
+equation
+der(S) = -alpha*S;
+der(I) = alpha*S - beta*I;
+der(R) = beta*I;
+end lab06_2;
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{OpenModelica. Случай 2}
+\phantomsection\label{openmodelica.-ux441ux43bux443ux447ux430ux439-2-1}
+Запустим код: Cм. \hyperlink{fig:004}{рис. 4}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\textwidth,height=\textheight]{2.jpg}
+\caption{Графики численности SIR: больные могут заражать особей группы
+S}\label{fig:004}
+\end{figure}
+\end{frame}
+
+\begin{frame}{OpenModelica. Случай 2}
+\phantomsection\label{openmodelica.-ux441ux43bux443ux447ux430ux439-2-2}
+Из графика видно, что первоначально популяция в основном состоит из
+восприимчивых к инфекции людей (S), их количество резко сокращается с
+течением времени. Это связано с переходом людей из этой группы в группу
+инфицированных (I), что видно по увеличению количества инфицированных,
+которое достигает пика примерно в середине рассматриваемого периода
+времени.
+
+После достижения пика, количество инфицированных начинает уменьшаться,
+что указывает на выздоровление людей и переход их в группу иммунных (R).
+Соответственно, количество выздоровевших со временем растёт.
+\end{frame}
+
+\begin{frame}{OpenModelica. Случай 2}
+\phantomsection\label{openmodelica.-ux441ux43bux443ux447ux430ux439-2-3}
+Несколько моментов, на которые стоит обратить внимание:
+
+\begin{enumerate}
+\item
+  Пик эпидемии (максимальное число инфицированных) наступает примерно
+  после 30 секунд на графике.
+\item
+  Скорость распространения инфекции в начале эпидемии высока, так как
+  большое количество восприимчивых встречаются с инфицированными.
+\item
+  По мере уменьшения восприимчивых и увеличения выздоровевших скорость
+  распространения инфекции замедляется.
+\item
+  К концу рассматриваемого периода на графике, количество восприимчивых
+  сильно уменьшилось, что может указывать на охват инфекцией большей
+  части популяции и на формирование иммунитета.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Заключение}
+\phantomsection\label{ux437ux430ux43aux43bux44eux447ux435ux43dux438ux435}
+Рассмотрели простейшую задачу об эпидемии. Построили графики для двух
+случаев на Julia и OpenModelica: для изолированных особей популяции /
+для особей, которые подвержены заражению.
+\end{frame}
+
+\begin{frame}{Библиографическая справка}
+\phantomsection\label{ux431ux438ux431ux43bux438ux43eux433ux440ux430ux444ux438ux447ux435ux441ux43aux430ux44f-ux441ux43fux440ux430ux432ux43aux430}
+{[}1{]} Задача об эпидемии:
+https://cyberleninka.ru/article/n/uchebnaya-model-razvitiya-epidemii
+\end{frame}
