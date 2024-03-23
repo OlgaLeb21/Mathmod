@@ -1,0 +1,317 @@
+\begin{frame}{Цель работы}
+\phantomsection\label{ux446ux435ux43bux44c-ux440ux430ux431ux43eux442ux44b}
+Рассмотреть и решить задачу об эффективности рекламы на языках
+Julia{[}1{]} и OpenModelica{[}2{]}.
+\end{frame}
+
+\begin{frame}{Теоретическое введение}
+\phantomsection\label{ux442ux435ux43eux440ux435ux442ux438ux447ux435ux441ux43aux43eux435-ux432ux432ux435ux434ux435ux43dux438ux435}
+Организуется рекламная кампания нового товара или услуги. Необходимо,
+чтобы прибыль будущих продаж с избытком покрывала издержки на рекламу.
+Вначале расходы могут превышать прибыль, поскольку лишь малая часть
+потенциальных покупателей будет информирована о новинке. Затем, при
+увеличении числа продаж, возрастает и прибыль, и, наконец, наступит
+момент, когда рынок насытиться, и рекламировать товар станет бесполезным
+{[}3{]}.
+
+Предположим, что торговыми учреждениями реализуется некоторая продукция,
+о которой в момент времени \(t\) из числа потенциальных покупателей
+\(N\) знает лишь \(n\) покупателей. Для ускорения сбыта продукции
+запускается реклама по радио, телевидению и других средств массовой
+информации. После запуска рекламной кампании информация о продукции
+начнет распространяться среди потенциальных покупателей путем общения
+друг с другом. Таким образом, после запуска рекламных объявлений
+скорость изменения числа знающих о продукции людей пропорциональна как
+числу знающих о товаре покупателей, так и числу покупателей о нем не
+знающих
+\end{frame}
+
+\begin{frame}{Теоретическое введение}
+\phantomsection\label{ux442ux435ux43eux440ux435ux442ux438ux447ux435ux441ux43aux43eux435-ux432ux432ux435ux434ux435ux43dux438ux435-1}
+Модель рекламной кампании описывается следующими величинами. Считаем,
+что \(\frac{dn}{dt}\) - скорость изменения со временем числа
+потребителей, узнавших о товаре и готовых его купить, \(t\) - время,
+прошедшее с начала рекламной кампании, \(N\) - общее число потенциальных
+платежеспособных покупателей, \(n(t)\) - число уже информированных
+клиентов. Эта величина пропорциональна числу покупателей, еще не знающих
+о нем, это описывается следующим образом: \(\alpha _1(t)(N-n(t))\), где
+\(\alpha _1>0\) - характеризует интенсивность рекламной кампании
+(зависит от затрат на рекламу в данный момент времени). Помимо этого,
+узнавшие о товаре потребители также распространяют полученную информацию
+среди потенциальных покупателей, не знающих о нем (в этом случае
+работает т.н. сарафанное радио). Этот вклад в рекламу описывается
+величиной \(\alpha _2(t)n(t)(N-n(t))\). эта величина увеличивается с
+увеличением потребителей узнавших о товаре. Математическая модель
+распространения рекламы описывается уравнением:
+
+\[\frac{dn}{dt} = (\alpha _1(t) + \alpha _2(t)n(t))(N-n(t))\]
+\end{frame}
+
+\begin{frame}{Задание}
+\phantomsection\label{ux437ux430ux434ux430ux43dux438ux435}
+Вариант 17
+
+Постройте график распространения рекламы, математическая модель которой
+описывается следующим уравнением:
+
+\begin{enumerate}
+\tightlist
+\item
+  \(\frac{dn}{dt} = (0.63 + 0.000013n(t))(N-n(t))\)
+\item
+  \(\frac{dn}{dt} = (0.000035 + 0.98n(t))(N-n(t))\)
+\item
+  \(\frac{dn}{dt} = (0.65sin(7t) + \cos{(3t)} n(t))(N-n(t))\)
+\end{enumerate}
+
+При этом объем аудитории \(N = 741\), в начальный момент о товаре знает
+4 человек. Для случая 2 определите в какой момент времени скорость
+распространения рекламы будет иметь максимальное значение.
+\end{frame}
+
+\section{Выполнение лабораторной
+работы}\label{ux432ux44bux43fux43eux43bux43dux435ux43dux438ux435-ux43bux430ux431ux43eux440ux430ux442ux43eux440ux43dux43eux439-ux440ux430ux431ux43eux442ux44b}
+
+\begin{frame}[fragile]{Julia. Случай 1}
+\phantomsection\label{julia.-ux441ux43bux443ux447ux430ux439-1}
+Напишем код на Jilia для случая 1:
+\(\frac{dn}{dt} = (0.63 + 0.000013n(t))(N-n(t))\)
+
+\begin{verbatim}
+using Plots
+using DifferentialEquations
+N = 741
+n0 = 4
+function ode_fn(du, u, p, t)
+    (n) = u
+    du[1] = (0.63 + 0.00013*u[1])*(N - u[1])
+end
+v0 = [n0]
+tspan = (0.0, 30.0)
+prob = ODEProblem(ode_fn, v0, tspan)
+sol = solve(prob, dtmax = 0.05)
+n = [u[1] for u in sol.u]
+T = [t for t in sol.t]
+plt = plot(dpi = 600, title = "Эффективность распространения рекламы (1) ", legend = false)
+plot!(plt, T, n, color = :red)
+savefig(plt, "lab07_1.png")
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{Julia. Случай 1}
+\phantomsection\label{julia.-ux441ux43bux443ux447ux430ux439-1-1}
+Запустим код при помощи командной строки и получим изображение с
+динамикой эффективности рекламы во времени: Cм. \hyperlink{fig:001}{рис.
+1}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\textwidth,height=\textheight]{lab07_1.png}
+\caption{График для случая 1 (Julia)}\label{fig:001}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Julia. Случай 2}
+\phantomsection\label{julia.-ux441ux43bux443ux447ux430ux439-2}
+Напишем код на Jilia для случая 2:
+\(\frac{dn}{dt} = (0.000035 + 0.98n(t))(N-n(t))\)
+
+\begin{verbatim}
+using Plots
+using DifferentialEquations
+
+N = 741
+n0 = 4
+
+function ode_fn(du, u, p, t)
+    (n) = u
+    du[1] = (0.000035 + 0.98*u[1])*(N - u[1])
+end
+
+v0 = [n0]
+tspan = (0.0, 0.1)
+prob = ODEProblem(ode_fn, v0, tspan)
+sol = solve(prob)
+n = [u[1] for u in sol.u]
+T = [t for t in sol.t]
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Julia. Случай 2}
+\phantomsection\label{julia.-ux441ux43bux443ux447ux430ux439-2-1}
+\begin{verbatim}
+max_dn = 0;
+max_dn_t = 0;
+max_dn_n = 0;
+for (i, t) in enumerate(T)
+    if sol(t, Val{1})[1] > max_dn
+        global max_dn = sol(t, Val{1})[1]
+        global max_dn_t = t
+        global max_dn_n = n[i]
+    end
+end
+
+plt = plot(dpi = 600, title = "Эффективность распространения рекламы (2) ", legend = false)
+plot!(plt, T, n, color = :red)
+plot!(plt, [max_dn_t], [max_dn_n], seriestype = :scatter, color = :red)
+savefig(plt, "lab07_2.png")
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{Julia. Случай 2}
+\phantomsection\label{julia.-ux441ux43bux443ux447ux430ux439-2-2}
+Запустим код при помощи командной строки и получим изображение с
+динамикой эффективности рекламы во времени и точку, в которой скорость
+распространения достигает максимума: Cм. \hyperlink{fig:002}{рис. 2}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\textwidth,height=\textheight]{lab07_2.png}
+\caption{График для случая 2 (Julia)}\label{fig:002}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Julia. Случай 3}
+\phantomsection\label{julia.-ux441ux43bux443ux447ux430ux439-3}
+Напишем код на Jilia для случая 3:
+\(\frac{dn}{dt} = (0.65sin(7t) + \cos{(3t)} n(t))(N-n(t))\)
+
+\begin{verbatim}
+using Plots
+using DifferentialEquations
+N = 741
+n0 = 4
+function ode_fn(du, u, p, t)
+    (n) = u
+    du[1] = (0.65*sin(7*t) + cos(3*t)*u[1])*(N - u[1])
+end
+v0 = [n0]
+tspan = (0.0, 0.1)
+prob = ODEProblem(ode_fn, v0, tspan)
+sol = solve(prob, dtmax = 0.05)
+n = [u[1] for u in sol.u]
+T = [t for t in sol.t]
+plt = plot(dpi = 600, title = "Эффективность распространения рекламы (3) ", legend = false)
+plot!(plt, T, n, color = :red)
+savefig(plt, "lab07_3.png")
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{Julia. Случай 3}
+\phantomsection\label{julia.-ux441ux43bux443ux447ux430ux439-3-1}
+Запустим код при помощи командной строки и получим изображениe: Cм.
+\hyperlink{fig:003}{рис. 3}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\textwidth,height=\textheight]{lab07_3.png}
+\caption{График для случая 3 (Julia)}\label{fig:003}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{OpenModelica. Случай 1}
+\phantomsection\label{openmodelica.-ux441ux43bux443ux447ux430ux439-1}
+Напишем код на OpenModelica для случая 1:
+\(\frac{dn}{dt} = (0.63 + 0.000013n(t))(N-n(t))\)
+
+\begin{verbatim}
+model lab07_1
+Real N = 741;
+Real n;
+initial equation
+n = 4;
+equation
+der(n) = (0.63 + 0.00013*n)*(N-n);
+end lab07_1;
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{OpenModelica. Случай 1}
+\phantomsection\label{openmodelica.-ux441ux43bux443ux447ux430ux439-1-1}
+Запустим код при помощи кнопок ``проверить модель'' -\textgreater{}
+``симулировать''. Не забываем в настройках указать заданные нам
+начальные условия (время). Cм. \hyperlink{fig:004}{рис. 4}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\textwidth,height=\textheight]{OM_1.jpg}
+\caption{График для случая 1 (OpenModelica)}\label{fig:004}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{OpenModelica. Случай 2}
+\phantomsection\label{openmodelica.-ux441ux43bux443ux447ux430ux439-2}
+Напишем код на OpenModelica для случая 2:
+\(\frac{dn}{dt} = (0.000035 + 0.98n(t))(N-n(t))\)
+
+\begin{verbatim}
+model lab07_2
+Real N = 741;
+Real n;
+initial equation
+n = 4;
+equation
+der(n) = (0.000035 + 0.95*n)*(N-n);
+end lab07_2;
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{OpenModelica. Случай 2}
+\phantomsection\label{openmodelica.-ux441ux43bux443ux447ux430ux439-2-1}
+Запустим код при помощи кнопок ``проверить модель'' -\textgreater{}
+``симулировать''. Не забываем в настройках указать заданные нам
+начальные условия (время). Cм. \hyperlink{fig:005}{рис. 5}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\textwidth,height=\textheight]{OM_2.jpg}
+\caption{График для случая 2 (OpenModelica)}\label{fig:005}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{OpenModelica. Случай 3}
+\phantomsection\label{openmodelica.-ux441ux43bux443ux447ux430ux439-3}
+Напишем код на OpenModelica для случая 3:
+\(\frac{dn}{dt} = (0.65sin(7t) + \cos{(3t)} n(t))(N-n(t))\)
+
+\begin{verbatim}
+model lab07_3
+Real N = 741;
+Real n;
+initial equation
+n = 4;
+equation
+der(n) = (0.65 * sin(7*time) + cos(3*time)*n)*(N-n);
+end lab07_3;
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{OpenModelica. Случай 3}
+\phantomsection\label{openmodelica.-ux441ux43bux443ux447ux430ux439-3-1}
+Запустим код при помощи кнопок ``проверить модель'' -\textgreater{}
+``симулировать''. Не забываем в настройках указать заданные нам
+начальные условия (время). Cм. \hyperlink{fig:006}{рис. 6}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\textwidth,height=\textheight]{OM_3.jpg}
+\caption{График для случая 3 (OpenModelica)}\label{fig:006}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Заключение}
+\phantomsection\label{ux437ux430ux43aux43bux44eux447ux435ux43dux438ux435}
+Рассмотрели и решили задачу об эффективности рекламы на языках Julia и
+OpenModelica. Получили идентичные результаты. Отметили, что на языке
+OpenModelica реализация более ёмкая, нежели на языке Julia.
+\end{frame}
+
+\begin{frame}{Библиографическая справка}
+\phantomsection\label{ux431ux438ux431ux43bux438ux43eux433ux440ux430ux444ux438ux447ux435ux441ux43aux430ux44f-ux441ux43fux440ux430ux432ux43aux430}
+{[}1{]} Документация по Julia: https://docs.julialang.org/en/v1/
+
+{[}2{]} Документация по OpenModelica: https://openmodelica.org/
+
+{[}3{]} Мальтузианская модель роста:
+https://www.stolaf.edu//people/mckelvey/envision.dir/malthus.html
+\end{frame}
