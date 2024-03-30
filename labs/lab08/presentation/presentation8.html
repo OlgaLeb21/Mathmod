@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>presentation8.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="%D0%BB%D0%B0%D0%B1%D0%BE%D1%80%D0%B0%D1%82%D0%BE%D1%80%D0%BD%D0%B0%D1%8F-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%E2%84%968">Лабораторная работа №8</h1>
+<h2 id="%22%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D1%8C-%D0%BA%D0%BE%D0%BD%D0%BA%D1%83%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B8-%D0%B4%D0%B2%D1%83%D1%85-%D1%84%D0%B8%D1%80%D0%BC%22">&quot;Модель конкуренции двух фирм&quot;</h2>
+<p>Выполнилa: Лебедева Ольга Андреевна</p>
+<p>Группа: НФИбд-02-21</p>
+<p>Преподаватель Кулябов Дмитрий Сергеевич д.ф.-м.н.,
+профессор кафедры теории вероятностей и кибербезопасности</p>
+<p>Институт: Российский университет дружбы народов, Москва, Россия</p>
+<p>Год: 2024</p>
+<hr>
+<h2 id="%D1%86%D0%B5%D0%BB%D1%8C-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B">Цель работы</h2>
+<p>Изучить модель конкуренции двух фирм[1]. Написать код на языках Julia[2] и OpenModelica[3] и построить графики для двух различных случаев.</p>
+<hr>
+<h2 id="%D1%82%D0%B5%D0%BE%D1%80%D0%B5%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5-%D0%B2%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5">Теоретическое введение</h2>
+<p>Для построения модели конкуренции хотя бы двух фирм необходимо рассмотреть модель одной фирмы. Вначале рассмотрим модель фирмы, производящей продукт долговременного пользования, когда цена его определяется балансом спроса и предложения. Примем, что этот продукт занимает определенную нишу рынка и конкуренты в ней отсутствуют.
+Обозначим:</p>
+<p>$N$ - число потребителей производимого продукта.</p>
+<hr>
+<p>$S$ – доходы потребителей данного продукта. Считаем, что доходы всех потребителей одинаковы. Это предположение справедливо, если речь идет об одной рыночной нише, т.е. производимый продукт ориентирован на определенный слой населения.</p>
+<p>$M$ – оборотные средства предприятия</p>
+<p>$\tau$ - длительность производственного цикла</p>
+<p>$p$ - рыночная цена товара</p>
+<hr>
+<h2 id="%D1%82%D0%B5%D0%BE%D1%80%D0%B5%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5-%D0%B2%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5">Теоретическое введение</h2>
+<p>$\widetilde{p}$ - себестоимость продукта, то есть переменные издержки на производство единицы продукции</p>
+<p>$\delta$ - доля оборотных средств, идущая на покрытие переменных издержек</p>
+<p>$k$ - постоянные издержки, которые не зависят от количества выпускаемой продукции</p>
+<p>$Q(S/p)$ – функция спроса, зависящая от отношения дохода $S$ к цене $p$. Она равна количеству продукта, потребляемого одним потребителем в единицу времени.</p>
+<hr>
+<h2 id="%D1%82%D0%B5%D0%BE%D1%80%D0%B5%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5-%D0%B2%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5">Теоретическое введение</h2>
+<p>Функцию спроса товаров долговременного использования часто представляют в простейшей форме:</p>
+<p>$$Q = q - k\frac{p}{S} = q(1 - \frac{p}{p_{cr}})$$</p>
+<p>где $q$ – максимальная потребность одного человека в продукте в единицу времени.
+Эта функция падает с ростом цены и при $p = p_{cr}$ (критическая стоимость продукта) потребители отказываются от приобретения товара. Величина $p_{cr} = Sq/k$. Параметр $k$ – мера эластичности функции спроса по цене. Таким образом, функция спроса является пороговой (то есть, $Q(S/p) = 0$ при $p \geq p_{cr}$) и обладает свойствами насыщения.</p>
+<hr>
+<p>Уравнения динамики оборотных средств можно записать в виде:</p>
+<p>$$\frac{dM}{dt} = -\frac{M \delta}{\tau} + NQp - k = -\frac{M\delta}{\tau} + Nq(1 - \frac{p}{p_{cr}})p - k$$</p>
+<hr>
+<h2 id="%D1%82%D0%B5%D0%BE%D1%80%D0%B5%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5-%D0%B2%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5">Теоретическое введение</h2>
+<p>Уравнение для рыночной цены $p$ представим в виде:</p>
+<p>$$\frac{dp}{dt} = \gamma (-\frac{M\delta}{\tau \widetilde{p}} + Nq(1-\frac{p}{p_{cr}}) )$$</p>
+<p>Уравнения динамики оборотных средств приобретает вид:</p>
+<p>$$\frac{dM}{dt} = -\frac{M \delta}{\tau}(\frac{p}{p_{cr}}-1) - M^2 ( \frac{\delta}{\tau \widetilde{p} })^2 \frac{p_{cr}}{Nq} - k$$</p>
+<hr>
+<p>Это уравнение имеет два стационарных решения, соответствующих условию $dM/dt=0$</p>
+<p>$$ \widetilde{M_{1,2}} = \frac{1}{2} a \pm \sqrt{\frac{a^2}{4} - b}$$</p>
+<p>где</p>
+<p>$$ a = Nq(1 - \frac{\widetilde{p}}{p_{cr}} \widetilde{p} \frac{\tau}{\delta}), b = kNq \frac{(\tau \widetilde{p})^2}{p_{cr}\delta ^2} $$</p>
+<hr>
+<h2 id="%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5">Задание</h2>
+<p><i>Вариант 17 </i></p>
+<blockquote>
+<p>Случай 1</p>
+</blockquote>
+<p>Рассмотрим две фирмы, производящие взаимозаменяемые товары одинакового качества и находящиеся в одной рыночной нише. Считаем, что в рамках нашей модели конкурентная борьба ведётся только рыночными методами. То есть, конкуренты могут влиять на противника путем изменения параметров своего производства: себестоимость, время цикла, но не могут прямо вмешиваться в ситуацию на рынке («назначать» цену или влиять на потребителей каким-либо иным способом.) Будем считать, что постоянные издержки пренебрежимо малы, и в модели учитывать не будем. В этом случае динамика изменения объемов продаж фирмы 1 и фирмы 2 описывается следующей системой уравнений:</p>
+<hr>
+<p>$$\frac{dM_1}{d\Theta} = M_1 - \frac{b}{c_1}M_1 M_2 - \frac{a1}{c1} M_1^2 $$</p>
+<p>$$\frac{dM_2}{d\Theta} = \frac{c_2}{c_1}M_2 - \frac{b}{c_1} M_1 M_2 - \frac{a_2}{c_1} M_2^2$$</p>
+<hr>
+<h2 id="%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5">Задание</h2>
+<p>где</p>
+<p>$$a_1 = \frac{p_{cr}}{\tau_1^2 \widetilde{p}_1^2 Nq }$$</p>
+<p>$$a_2 = \frac{p_{cr}}{\tau_2^2 \widetilde{p}_2^2 Nq }$$</p>
+<p>$$b = \frac{p_{cr}}{\tau_1^2 \widetilde{p}_1^2 \tau_2^2 \widetilde{p}_2^2 Nq}$$</p>
+<p>$$c_1 = \frac{p_{cr} - \widetilde{p}_1}{\tau_1 \widetilde{p}_1}$$</p>
+<p>$$c_2 = \frac{p_{cr} - \widetilde{p}_2}{\tau_2 \widetilde{p}_2}$$</p>
+<p>также введена нормировка $t = c_1 \Theta$</p>
+<hr>
+<h2 id="%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5">Задание</h2>
+<blockquote>
+<p>Случай 2</p>
+</blockquote>
+<p>Рассмотрим модель, когда, помимо экономического фактора влияния (изменение себестоимости, производственного цикла, использование кредита и т.п.), используются еще и социально-психологические факторы – формирование общественного предпочтения одного товара другому, не зависимо от их качества и цены. В этом случае взаимодействие двух фирм будет зависеть друг от друга, соответственно коэффициент перед $M_1 M_2$ будет отличаться. Пусть в рамках рассматриваемой модели динамика изменения объемов продаж фирмы 1 и фирмы 2 описывается следующей системой уравнений:</p>
+<hr>
+<p>$$\frac{dM_1}{d\Theta} = M_1 - (\frac{b}{c_1} + 0.0008)M_1 M_2 - \frac{a1}{c1} M_1^2 $$</p>
+<p>$$ \frac{dM_2}{d\Theta} = \frac{c_2}{c_1} M_2 - \frac{b}{c_1} M_1 M_2 - \frac{a_2}{c_1} M_2^2$$</p>
+<hr>
+<h2 id="%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5">Задание</h2>
+<p>Для обоих случаев рассмотрим задачу со следующими начальными условиями и параметрами:</p>
+<p>$$ M_0^1=4.3 : M_0^2=3.9 $$
+$$ p_{cr}=10 : N=27 : q=1 $$
+$$ \tau_1=15 : \tau_2=24 $$
+$$ \widetilde{p}_1=7 : \widetilde{p}_2=4.9 $$</p>
+<ol>
+<li>Постройте графики изменения оборотных средств фирмы 1 и фирмы 2 без учета постоянных издержек и с веденной нормировкой для случая 1.</li>
+<li>Постройте графики изменения оборотных средств фирмы 1 и фирмы 2 без учета постоянных издержек и с веденной нормировкой для случая 2.</li>
+</ol>
+<hr>
+<h1 id="%D0%B2%D1%8B%D0%BF%D0%BE%D0%BB%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BB%D0%B0%D0%B1%D0%BE%D1%80%D0%B0%D1%82%D0%BE%D1%80%D0%BD%D0%BE%D0%B9-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B">Выполнение лабораторной работы</h1>
+<hr>
+<h2 id="julia">Julia</h2>
+<p>Напишем код на Jilia для случая 1:</p>
+<pre><code>using Plots
+using DifferentialEquations
+
+kr = 10
+t1 = 15
+p1 = 7
+t2 = 24
+p2 = 4.9
+N = 27
+q = 1
+
+a1 = kr / (t1 * t1 * p1 * p1 * N * q)
+a2 = kr / (t2 * t2 * p2 * p2 * N *q)
+b = kr / (t1 * t1 * t2 * t2 * p1 * p1 * p2 * p2 * N * q)
+c1 = (kr - p1) / (t1 * p1)
+c2 = (kr - p2) / (t2 * p2)
+
+
+function ode_fn(du, u, p, t)
+    M1, M2 = u
+    du[1] = u[1] - b / c1*u[1] * u[2] - a1 / c1*u[1] * u[1]
+    du[2] = c2 / c1*u[2] - b / c1*u[1] * u[2] - a2 / c1*u[2] * u[2]
+end
+</code></pre>
+<hr>
+<h2 id="julia">Julia</h2>
+<pre><code>v0 = [4.2, 3.9]
+tspan = (0.0, 30.0)
+prob = ODEProblem(ode_fn, v0, tspan)
+sol = solve(prob, dtmax = 0.05)
+M1 = [u[1] for u in sol.u]
+M2 = [u[2] for u in sol.u]
+T = [t for t in sol.t]
+
+plt = plot(
+dpi = 600,
+legend = true)
+
+plot!(plt, T, M1, label = &quot;Оборотные средства фирмы #1&quot;, color = :green)
+
+plot!(plt, T, M2, label = &quot;Оборотные средства фирмы #2&quot;, color = :red)
+
+savefig(plt, &quot;lab08_1.png&quot;)
+</code></pre>
+<hr>
+<h2 id="julia">Julia</h2>
+<p>Запустим код при помощи командной строки и получим изображение с изменением оборотных средств двух фирм: Cм. <a href="#fig:001">рис. 1</a></p>
+<p><img src="lab08_1.png" alt="График изменения оборотных средств фирмы 1 (зелёный) и фирмы 2 (красный) w:800"></p>
+<hr>
+<h2 id="julia">Julia</h2>
+<p>По графику видно, что рост оборотных средств предприятий идет независимо друг от друга.</p>
+<p>Каждая фирма достигает свое максимальное значение объема продаж и остается на рынке с этим значением, то есть каждая фирма захватывает свою часть рынка потребителей, которая не изменяется.</p>
+<hr>
+<h2 id="julia">Julia</h2>
+<p>Напишем код на Jilia для случая 2:</p>
+<pre><code>using Plots
+using DifferentialEquations
+
+kr = 10
+t1 = 15
+p1 = 7
+t2 = 24
+p2 = 4.9
+N = 27
+q = 1
+
+a1 = kr / (t1 * t1 * p1 * p1 * N * q)
+a2 = kr / (t2 * t2 * p2 * p2 * N *q)
+b = kr / (t1 * t1 * t2 * t2 * p1 * p1 * p2 * p2 * N * q)
+c1 = (kr - p1) / (t1 * p1)
+c2 = (kr - p2) / (t2 * p2)
+
+
+function ode_fn(du, u, p, t)
+    M1, M2 = u
+    du[1] = u[1] - (b / c1 + 0.0008)*u[1] * u[2] - a1 / c1*u[1] * u[1]
+    du[2] = c2 / c1*u[2] - b / c1*u[1] * u[2] - a2 / c1*u[2] * u[2]
+end
+</code></pre>
+<hr>
+<h2 id="julia">Julia</h2>
+<pre><code>v0 = [4.2, 3.9]
+tspan = (0.0, 30.0)
+prob = ODEProblem(ode_fn, v0, tspan)
+sol = solve(prob, dtmax = 0.05)
+M1 = [u[1] for u in sol.u]
+M2 = [u[2] for u in sol.u]
+T = [t for t in sol.t]
+
+plt = plot(
+dpi = 600,
+legend = :topright)
+
+plot!(plt, T, M1, label = &quot;Оборотные средства фирмы #1&quot;, color = :green)
+
+plot!(plt, T, M2, label = &quot;Оборотные средства фирмы #2&quot;, color = :red)
+
+savefig(plt, &quot;lab08_2.png&quot;)
+</code></pre>
+<hr>
+<h2 id="julia">Julia</h2>
+<p>Запустим код при помощи командной строки и получим изображениe: Cм. <a href="#fig:002">рис. 2</a></p>
+<p><img src="lab08_2.png" alt="График изменения оборотных средств фирмы 1 (зелёный) и фирмы 2 (красный) w:800"></p>
+<hr>
+<h2 id="julia">Julia</h2>
+<p>По графику видно, что вторая фирма, несмотря на начальный рост, достигнув своего максимального объема продаж, начитает нести убытки и, в итоге, терпит банкротство. Динамика роста объемов оборотных средств первой фирмы остается без изменения: достигнув максимального значения, остается на этом уровне.</p>
+<hr>
+<h2 id="openmodelica">OpenModelica</h2>
+<p>Напишем код на OpenModelica для случая 1:</p>
+<pre><code>model lab08_1
+Real kr = 10;
+Real t1 = 15;
+Real p1 = 7;
+Real t2 = 24;
+Real p2 = 4.9;
+Real N = 27;
+Real q = 1;
+
+Real a1 = kr / (t1 * t1 * p1 * p1 * N * q);
+Real a2 = kr / (t2 * t2 * p2 * p2 * N * q);
+Real b = kr / (t1 * t1 * t2 * t2 * p1 * p1 * p2 * p2 * N * q);
+Real c1 = (kr - p1) / (t1 * p1);
+Real c2 = (kr - p2) / (t2 * p2);
+</code></pre>
+<hr>
+<h2 id="openmodelica">OpenModelica</h2>
+<pre><code>Real M1;
+Real M2;
+initial equation
+M1 = 4.3;
+M2 = 3.9;
+equation
+der(M1) = M1 - b / c1 * M1 * M2 - a1 / c1 * M1 * M1;
+der(M2) = c2 / c1 * M2 - b / c1 * M1 * M2 - a2 / c1 * M2 * M2;
+end lab08_1;
+</code></pre>
+<hr>
+<h2 id="openmodelica">OpenModelica</h2>
+<p>Запустим код при помощи кнопок &quot;проверить модель&quot; -&gt; &quot;симулировать&quot;. Не забываем в настройках указать заданные нам начальные условия (время). Cм. <a href="#fig:003">рис. 3</a></p>
+<p><img src="OM_1.jpg" alt="График изменения оборотных средств фирмы 1 (красный) и фирмы 2 (синий) w:900"></p>
+<hr>
+<h2 id="openmodelica">OpenModelica</h2>
+<p>Напишем код для случая 2:</p>
+<pre><code>model lab08_2
+Real kr = 10;
+Real t1 = 15;
+Real p1 = 7;
+Real t2 = 24;
+Real p2 = 4.9;
+Real N = 27;
+Real q = 1;
+
+Real a1 = kr / (t1 * t1 * p1 * p1 * N * q);
+Real a2 = kr / (t2 * t2 * p2 * p2 * N * q);
+Real b = kr / (t1 * t1 * t2 * t2 * p1 * p1 * p2 * p2 * N * q);
+Real c1 = (kr - p1) / (t1 * p1);
+Real c2 = (kr - p2) / (t2 * p2);
+</code></pre>
+<hr>
+<h2 id="openmodelica">OpenModelica</h2>
+<pre><code>Real M1;
+Real M2;
+initial equation
+M1 = 4.3;
+M2 = 3.9;
+equation
+der(M1) = M1 - (b / c1 + 0.0008) * M1 * M2 - a1 / c1 * M1 * M1;
+der(M2) = c2 / c1 * M2 - b / c1 * M1 * M2 - a2 / c1 * M2 * M2;
+end lab08_2;
+</code></pre>
+<hr>
+<h2 id="openmodelica">OpenModelica</h2>
+<p>Запустим код: Cм. <a href="#fig:004">рис. 4</a></p>
+<p><img src="OM_2.jpg" alt="График изменения оборотных средств фирмы 1 (красный) и фирмы 2 (синий) w:900"></p>
+<hr>
+<h1 id="%D0%B7%D0%B0%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5">Заключение</h1>
+<p>___~~~~</p>
+<h2 id="%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D0%B7-%D1%80%D0%B5%D0%B7%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%82%D0%BE%D0%B2">Анализ результатов</h2>
+<p>В итоге проделанной работы на языках Julia и OpenModelica мы построили графики изменения оборотных средств для двух фирм для случаев, когда конкурентная борьба ведётся только рыночными методами и когда, помимо экономического фактора влияния, используются еще и социально-психологические факторы.</p>
+<p>Построение модели конкуренции двух фирм на языке OpenModelica более ёмкое, чем аналогичное построение на Julia.</p>
+<hr>
+<h2 id="%D0%B2%D1%8B%D0%B2%D0%BE%D0%B4">Вывод</h2>
+<p>В ходе выполнения лабораторной работы была изучена модель конкуренции двух фирм и построена на языках Julia и Open Modelica.</p>
+<hr>
+<h2 id="%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D0%B3%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BA%D0%B0">Библиографическая справка</h2>
+<p>[1] Математические модели конкурентной среды: https://dspace.spbu.ru/bitstream/11701/12019/1/Gorynya_2018.pdf</p>
+<p>[2] Документация по Julia: https://docs.julialang.org/en/v1/</p>
+<p>[3] Документация по OpenModelica: https://openmodelica.org/</p>
+
+</body>
+</html>
